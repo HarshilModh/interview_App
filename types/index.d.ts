@@ -22,7 +22,7 @@ interface Interview {
   createdAt: string;
   userId: string;
   type: string;
-  finalized: boolean;
+  finalized:   boolean;
 }
 
 interface CreateFeedbackParams {
@@ -39,7 +39,7 @@ interface User {
 }
 
 interface InterviewCardProps {
-  interviewId?: string;
+  id?: string;
   userId?: string;
   role: string;
   type: string;
