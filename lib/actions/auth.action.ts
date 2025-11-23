@@ -117,3 +117,10 @@ export async function isAuthenticated() {
     return !!user;
 }
 
+export async function signOut() {
+    const cookieStore = await cookies();
+    // Remove the session cookie to sign the user out
+    cookieStore.delete('session');
+    return { success: true };
+}
+

@@ -135,3 +135,50 @@ export async function getInterviewsByUserId(
     ...doc.data(),
   })) as Interview[];
 }
+
+// Interviews the user has taken (appeared in feedback), even if created by others
+export async function getInterviewsTakenByUser(userId: string): Promise<Interview[]> {
+  if (!userId) return [];
+
+  // Removed orderBy to avoid composite index requirement; we'll sort client-side.
+  const feedbackSnapshot = await db
+    .collection('feedback')
+    .where('userId', '==', userId)
+    .get();
+
+  if (feedbackSnapshot.empty) return [];
+
+  const interviewIds: string[] = Array.from(
+    new Set(
+      feedbackSnapshot.docs
+        .map((doc: any) => doc.data().interviewId as string | undefined)
+        .filter((id: unknown): id is string => typeof id === 'string' && id.length > 0)
+    )
+  );
+
+  // Firestore 'in' queries limit to 30, so chunk if needed
+  const chunks: string[][] = [];
+  for (let i = 0; i < interviewIds.length; i += 30) {
+    chunks.push(interviewIds.slice(i, i + 30));
+  }
+
+  const interviewDocsArrays = await Promise.all(
+    chunks.map((chunk: string[]) =>
+      db
+        .collection('interviews')
+        .where('__name__', 'in', chunk) // '__name__' equals document ID
+        .get()
+    )
+  );
+
+  let interviews: Interview[] = interviewDocsArrays.flatMap(snapshot =>
+    snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() } as Interview))
+  );
+
+  // Sort descending by createdAt if available
+  interviews = interviews.sort((a, b) =>
+    (b.createdAt || '').localeCompare(a.createdAt || '')
+  );
+
+  return interviews;
+}
