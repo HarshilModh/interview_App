@@ -1,6 +1,6 @@
 # MockMate - AI Interview Coach
 
-![MockMate Logo](https://raw.githubusercontent.com/HarshilModh/prepwise/main/public/mockmate-logo.png)
+![MockMate Logo](https://raw.githubusercontent.com/HarshilModh/prepwise/main/public/logo.svg)
 
 MockMate is a real-time AI voice interview platform designed to help developers practice and improve their technical interview skills. It uses advanced voice AI and large language models to simulate realistic interview scenarios, provide instant feedback, and track progress over time.
 
