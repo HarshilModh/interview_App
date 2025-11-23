@@ -1,6 +1,6 @@
 # Interview Master - AI Interview Coach
 
-![Interview Master Logo](https://raw.githubusercontent.com/HarshilModh/prepwise/main/public/logo.svg)
+Live Link:https://interview-app-git-master-harshilmodhs-projects.vercel.app/
 
 Interview Master is a real-time AI voice interview platform designed to help developers practice and improve their technical interview skills. It uses advanced voice AI and large language models to simulate realistic interview scenarios, provide instant feedback, and track progress over time.
 
