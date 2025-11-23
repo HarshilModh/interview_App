@@ -113,7 +113,7 @@ export async function getLatestInterviews(
 
   const interviewsSnapshot = await query.limit(limit).get();
 
-  return interviewsSnapshot.docs.map((doc: FirebaseFirestore.DocumentSnapshot) => ({
+  return interviewsSnapshot.docs.map((doc: any) => ({
     id: doc.id,
     ...doc.data(),
   })) as Interview[];
@@ -130,7 +130,7 @@ export async function getInterviewsByUserId(
     .orderBy("createdAt", "desc")
     .get();
 
-  return interviewsSnapshot.docs.map((doc: FirebaseFirestore.DocumentSnapshot) => ({
+  return interviewsSnapshot.docs.map((doc:any) => ({
     id: doc.id,
     ...doc.data(),
   })) as Interview[];
