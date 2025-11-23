@@ -18,12 +18,8 @@ export async function createFeedback(params: CreateFeedbackParams) {
       .join("");
 
     const { object } = await generateObject({
-      // 1. FIX: Remove the configuration object from the google() call
       model: google("gemini-2.0-flash-001"), 
-      
-      // 2. FIX: Use 'json' mode to avoid strict schema validation errors
       mode: 'json', 
-      
       schema: feedbackSchema,
       prompt: `
         You are an AI interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories. Be thorough and detailed in your analysis. Don't be lenient with the candidate. If there are mistakes or areas for improvement, point them out.
@@ -70,9 +66,13 @@ export async function createFeedback(params: CreateFeedbackParams) {
 }
 
 export async function getInterviewById(id: string): Promise<Interview | null> {
-  const interview = await db.collection("interviews").doc(id).get();
+  if (!id) return null;
+  
+  const interviewDoc = await db.collection("interviews").doc(id).get();
+  
+  if (!interviewDoc.exists) return null;
 
-  return interview.data() as Interview | null;
+  return { id: interviewDoc.id, ...interviewDoc.data() } as Interview;
 }
 
 export async function getFeedbackByInterviewId(
@@ -80,16 +80,18 @@ export async function getFeedbackByInterviewId(
 ): Promise<Feedback | null> {
   const { interviewId, userId } = params;
 
-  const querySnapshot = await db
+  if (!interviewId || !userId) return null;
+
+  const feedbackSnapshot = await db
     .collection("feedback")
     .where("interviewId", "==", interviewId)
     .where("userId", "==", userId)
     .limit(1)
     .get();
 
-  if (querySnapshot.empty) return null;
+  if (feedbackSnapshot.empty) return null;
 
-  const feedbackDoc = querySnapshot.docs[0];
+  const feedbackDoc = feedbackSnapshot.docs[0];
   return { id: feedbackDoc.id, ...feedbackDoc.data() } as Feedback;
 }
 
@@ -98,15 +100,20 @@ export async function getLatestInterviews(
 ): Promise<Interview[] | null> {
   const { userId, limit = 20 } = params;
 
-  const interviews = await db
+  // Build query conditionally to avoid undefined values
+  let query = db
     .collection("interviews")
     .orderBy("createdAt", "desc")
-    .where("finalized", "==", true)
-    .where("userId", "!=", userId)
-    .limit(limit)
-    .get();
+    .where("finalized", "==", true);
 
-  return interviews.docs.map((doc:any) => ({
+  // Only add userId filter if it's defined
+  if (userId) {
+    query = query.where("userId", "!=", userId);
+  }
+
+  const interviewsSnapshot = await query.limit(limit).get();
+
+  return interviewsSnapshot.docs.map((doc: FirebaseFirestore.DocumentSnapshot) => ({
     id: doc.id,
     ...doc.data(),
   })) as Interview[];
@@ -115,13 +122,15 @@ export async function getLatestInterviews(
 export async function getInterviewsByUserId(
   userId: string
 ): Promise<Interview[] | null> {
-  const interviews = await db
+  if (!userId) return null;
+
+  const interviewsSnapshot = await db
     .collection("interviews")
     .where("userId", "==", userId)
     .orderBy("createdAt", "desc")
     .get();
 
-  return interviews.docs.map((doc:any) => ({
+  return interviewsSnapshot.docs.map((doc: FirebaseFirestore.DocumentSnapshot) => ({
     id: doc.id,
     ...doc.data(),
   })) as Interview[];
