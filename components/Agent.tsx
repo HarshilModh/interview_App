@@ -150,16 +150,25 @@ const Agent = ({
             <div className="call-view">
                 <div className="card-interviewer">
                     <div className="avatar">
-                        <Image src="/ai-avatar.png" alt="vapi" width={65} height={54} className="object-cover" />
+                        <Image src="/ai-avatar.png" alt="vapi" width={80} height={80} className="object-cover relative z-10" />
                         {isSpeaking && <span className="animate-speak" />}
                     </div>
-                    <h3>{type === 'generate' ? "Interview Creator" : "AI Interviewer"}</h3>
+                    <h3 className="text-2xl font-bold tracking-tight text-white mt-6">{type === 'generate' ? "Interview Creator" : "AI Interviewer"}</h3>
+                    <p className="text-light-400 text-center max-w-xs mt-2">
+                        {type === 'generate' 
+                            ? "I'll help you set up your interview session." 
+                            : "I'm ready to evaluate your technical skills."}
+                    </p>
                 </div>
 
                 <div className="card-border">
                     <div className="card-content">
-                        <Image src="/user-avatar.png" alt="user avatar" width={540} height={540} className="rounded-full object-cover size-[120px]" />
-                        <h3>{userName}</h3>
+                        <div className="relative">
+                            <div className="absolute inset-0 bg-primary-200/10 blur-3xl rounded-full" />
+                            <Image src="/user-avatar.png" alt="user avatar" width={540} height={540} className="rounded-full object-cover size-[140px] border-4 border-dark-300 shadow-2xl relative z-10" />
+                        </div>
+                        <h3 className="text-2xl font-bold tracking-tight text-white mt-6">{userName}</h3>
+                        <p className="text-light-400 text-center mt-2">Candidate</p>
                     </div>
                 </div>
             </div>
@@ -167,25 +176,37 @@ const Agent = ({
             {messages.length > 0 && (
                 <div className="transcript-border">
                     <div className="transcript">
-                        <p key={latestMessage} className={cn('transition-opacity duration-500 opacity-0', 'animate-fadeIn opacity-100')}>
+                        <p key={latestMessage} className={cn('transition-all duration-500 opacity-0 transform translate-y-2', 'animate-fadeIn opacity-100 translate-y-0')}>
                             {latestMessage}
                         </p>
                     </div>
                 </div>
             )}
 
-            <div className="w-full flex justify-center">
+            <div className="w-full flex justify-center mt-8">
                 {callStatus !== 'ACTIVE' ? (
-                    <button className="relative btn-call" onClick={handleCall} disabled={callStatus === CallStatus.CONNECTING}>
-                        <span className={cn('absolute animate-ping rounded-full opacity-75', callStatus !== 'CONNECTING' && 'hidden')}
+                    <button className="relative btn-call group" onClick={handleCall} disabled={callStatus === CallStatus.CONNECTING}>
+                        <span className={cn('absolute animate-ping rounded-full opacity-75 bg-success-100 inset-0', callStatus !== 'CONNECTING' && 'hidden')}
                         />
-                        <span className="relative z-10">
-                            {callStatus === CallStatus.CONNECTING ? 'Connecting...' : 'Start Call'}
+                        <span className="relative z-10 flex items-center gap-2">
+                            {callStatus === CallStatus.CONNECTING ? (
+                                <>Connecting...</>
+                            ) : (
+                                <>
+                                    <span>Start Interview</span>
+                                    <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                    </svg>
+                                </>
+                            )}
                         </span>
                     </button>
                 ) : (
-                    <button className="btn-disconnect" onClick={handleDisconnect}>
-                        End Call
+                    <button className="btn-disconnect group flex items-center gap-2" onClick={handleDisconnect}>
+                        <span>End Session</span>
+                        <svg className="w-5 h-5 transition-transform group-hover:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
                     </button>
                 )}
             </div>

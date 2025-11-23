@@ -16,7 +16,7 @@ async function Home() {
   const takenInterviews = (user ? await getInterviewsTakenByUser(user.id) : []) || [];
 
   // Merge & de-duplicate by id
-  const userInterviewsMap = new Map<string, Interview>();
+  const userInterviewsMap = new Map<string, any>();
   for (const intv of [...createdInterviews, ...takenInterviews]) {
     if (intv) userInterviewsMap.set(intv.id, intv);
   }

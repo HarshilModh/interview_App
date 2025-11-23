@@ -5,22 +5,22 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-success-100: #49de50;
-  --color-success-200: #42c748;
-  --color-destructive-100: #f75353;
-  --color-destructive-200: #c44141;
+  --color-success-100: #22c55e; /* Green 500 */
+  --color-success-200: #16a34a; /* Green 600 */
+  --color-destructive-100: #ef4444; /* Red 500 */
+  --color-destructive-200: #dc2626; /* Red 600 */
 
-  --color-primary-100: #dddfff;
-  --color-primary-200: #cac5fe;
+  --color-primary-100: #a78bfa; /* Violet 400 */
+  --color-primary-200: #7c3aed; /* Violet 600 - Electric Violet */
 
-  --color-light-100: #d6e0ff;
-  --color-light-400: #6870a6;
-  --color-light-600: #4f557d;
-  --color-light-800: #24273a;
+  --color-light-100: #e4e4e7; /* Zinc 200 */
+  --color-light-400: #a1a1aa; /* Zinc 400 */
+  --color-light-600: #52525b; /* Zinc 600 */
+  --color-light-800: #27272a; /* Zinc 800 */
 
-  --color-dark-100: #020408;
-  --color-dark-200: #27282f;
-  --color-dark-300: #242633;
+  --color-dark-100: #000000; /* Pure Black */
+  --color-dark-200: #09090b; /* Zinc 950 */
+  --color-dark-300: #18181b; /* Zinc 900 */
 
   --font-mona-sans: "Mona Sans", sans-serif;
 
@@ -28,7 +28,7 @@
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.5rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -139,16 +139,16 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-dark-100 text-white font-mona-sans antialiased;
   }
   p {
     @apply text-light-100;
   }
   h2 {
-    @apply text-3xl font-semibold;
+    @apply text-3xl font-bold tracking-tight;
   }
   h3 {
-    @apply text-2xl font-semibold;
+    @apply text-2xl font-semibold tracking-tight;
   }
   ul {
     @apply list-disc list-inside;
@@ -160,7 +160,7 @@
 
 @layer components {
   .btn-call {
-    @apply inline-block px-7 py-3 font-bold text-sm leading-5 text-white transition-colors duration-150 bg-success-100 border border-transparent rounded-full shadow-sm focus:outline-none focus:shadow-2xl active:bg-success-200 hover:bg-success-200 min-w-28 cursor-pointer items-center justify-center overflow-visible;
+    @apply inline-block px-8 py-4 font-bold text-base leading-5 text-white transition-all duration-200 bg-success-100 border border-success-200 rounded-lg shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] hover:scale-105 active:scale-95 min-w-32 cursor-pointer items-center justify-center overflow-visible;
 
     .span {
       @apply bg-success-100 h-[85%] w-[65%];
@@ -168,44 +168,44 @@
   }
 
   .btn-disconnect {
-    @apply inline-block px-7 py-3 text-sm font-bold leading-5 text-white transition-colors duration-150 bg-destructive-100 border border-transparent rounded-full shadow-sm focus:outline-none focus:shadow-2xl active:bg-destructive-200 hover:bg-destructive-200 min-w-28;
+    @apply inline-block px-8 py-4 text-base font-bold leading-5 text-white transition-all duration-200 bg-destructive-100 border border-destructive-200 rounded-lg shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)] hover:scale-105 active:scale-95 min-w-32;
   }
 
   .btn-upload {
-    @apply flex min-h-14 w-full items-center justify-center gap-1.5 rounded-md;
+    @apply flex min-h-14 w-full items-center justify-center gap-1.5 rounded-lg;
   }
   .btn-primary {
-    @apply w-fit !bg-primary-200 !text-dark-100 hover:!bg-primary-200/80 !rounded-full !font-bold px-5 cursor-pointer min-h-10;
+    @apply w-fit !bg-primary-200 !text-white hover:!bg-primary-200/90 !rounded-lg !font-bold px-6 cursor-pointer min-h-12 transition-all shadow-[0_0_15px_rgba(124,58,237,0.3)] hover:shadow-[0_0_25px_rgba(124,58,237,0.5)] hover:-translate-y-0.5;
   }
   .btn-secondary {
-    @apply w-fit !bg-dark-200 !text-primary-200 hover:!bg-dark-200/80 !rounded-full !font-bold px-5 cursor-pointer min-h-10;
+    @apply w-fit !bg-dark-200 !text-primary-200 hover:!bg-dark-200/80 !rounded-lg !font-bold px-6 cursor-pointer min-h-12 border border-dark-300 hover:border-primary-200/50 transition-colors;
   }
 
   .btn-upload {
-    @apply bg-dark-200 rounded-full min-h-12 px-5 cursor-pointer border border-input  overflow-hidden;
+    @apply bg-dark-200 rounded-lg min-h-12 px-5 cursor-pointer border border-input overflow-hidden;
   }
 
   .card-border {
-    @apply border-gradient p-0.5 rounded-2xl w-fit;
+    @apply border-gradient p-[1px] rounded-xl w-fit relative before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-b before:from-white/10 before:to-transparent before:rounded-xl before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-500;
   }
 
   .card {
-    @apply dark-gradient rounded-2xl min-h-full;
+    @apply dark-gradient rounded-xl min-h-full backdrop-blur-xl bg-dark-200/50;
   }
 
   .form {
     @apply w-full;
 
     .label {
-      @apply !text-light-100 !font-normal;
+      @apply !text-light-100 !font-medium;
     }
 
     .input {
-      @apply !bg-dark-200 !rounded-full !min-h-12 !px-5 placeholder:!text-light-100;
+      @apply !bg-dark-300 !rounded-lg !min-h-12 !px-5 placeholder:!text-light-600 !border-light-800 focus:!border-primary-200 focus:!ring-1 focus:!ring-primary-200 transition-all;
     }
 
     .btn {
-      @apply !w-full !bg-primary-200 !text-dark-100 hover:!bg-primary-200/80 !rounded-full !min-h-10 !font-bold !px-5 cursor-pointer;
+      @apply !w-full !bg-primary-200 !text-white hover:!bg-primary-200/90 !rounded-lg !min-h-12 !font-bold !px-5 cursor-pointer shadow-lg shadow-primary-200/20;
     }
   }
 
@@ -213,38 +213,38 @@
     @apply flex sm:flex-row flex-col gap-10 items-center justify-between w-full;
 
     h3 {
-      @apply text-center text-primary-100 mt-5;
+      @apply text-center text-white mt-6 text-xl font-bold;
     }
 
     .card-interviewer {
-      @apply flex-center flex-col gap-2 p-7 h-[400px] blue-gradient-dark rounded-lg border-2 border-primary-200/50 flex-1 sm:basis-1/2 w-full;
+      @apply flex-center flex-col gap-4 p-8 h-[450px] obsidian-gradient rounded-xl border border-light-800 flex-1 sm:basis-1/2 w-full backdrop-blur-md shadow-2xl;
     }
 
     .avatar {
-      @apply z-10 flex items-center justify-center blue-gradient rounded-full size-[120px] relative;
+      @apply z-10 flex items-center justify-center bg-black rounded-full size-[140px] relative shadow-[0_0_40px_rgba(124,58,237,0.2)] border border-primary-200/30;
 
       .animate-speak {
-        @apply absolute inline-flex size-5/6 animate-ping rounded-full bg-primary-200 opacity-75;
+        @apply absolute inline-flex size-full animate-ping rounded-full bg-primary-200 opacity-20;
       }
     }
 
     .card-border {
-      @apply border-gradient p-0.5 rounded-2xl flex-1 sm:basis-1/2 w-full h-[400px] max-md:hidden;
+      @apply border-gradient p-[1px] rounded-xl flex-1 sm:basis-1/2 w-full h-[450px] max-md:hidden;
     }
 
     .card-content {
-      @apply flex flex-col gap-2 justify-center items-center p-7 dark-gradient rounded-2xl min-h-full;
+      @apply flex flex-col gap-4 justify-center items-center p-8 dark-gradient rounded-xl min-h-full border border-light-800;
     }
   }
 
   .transcript-border {
-    @apply border-gradient p-0.5 rounded-2xl w-full;
+    @apply border-gradient p-[1px] rounded-xl w-full mt-8;
 
     .transcript {
-      @apply dark-gradient rounded-2xl  min-h-12 px-5 py-3 flex items-center justify-center;
+      @apply bg-dark-200/80 backdrop-blur-md rounded-xl min-h-24 px-8 py-6 flex items-center justify-center border border-light-800;
 
       p {
-        @apply text-lg text-center text-white;
+        @apply text-xl text-center text-white font-medium leading-relaxed;
       }
     }
   }
@@ -266,11 +266,11 @@
   }
 
   .card-cta {
-    @apply flex flex-row blue-gradient-dark rounded-3xl px-16 py-6 items-center justify-between max-sm:px-4;
+    @apply flex flex-row obsidian-gradient rounded-2xl px-16 py-8 items-center justify-between max-sm:px-4 border border-light-800 shadow-2xl;
   }
 
   .interviews-section {
-    @apply flex flex-wrap gap-4 max-lg:flex-col w-full items-stretch;
+    @apply flex flex-wrap gap-6 max-lg:flex-col w-full items-stretch;
   }
 
   .interview-text {
@@ -282,24 +282,28 @@
   }
 
   .tech-tooltip {
-    @apply absolute bottom-full mb-1 hidden group-hover:flex px-2 py-1 text-xs text-white bg-gray-700 rounded-md shadow-md;
+    @apply absolute bottom-full mb-2 hidden group-hover:flex px-3 py-1.5 text-xs font-medium text-white bg-dark-300 rounded-md shadow-xl border border-light-800;
   }
 
   .card-interview {
-    @apply dark-gradient rounded-2xl min-h-full flex flex-col p-6 relative overflow-hidden gap-10 justify-between;
+    @apply bg-dark-200 rounded-xl min-h-full flex flex-col p-6 relative overflow-hidden gap-8 justify-between hover:shadow-[0_0_30px_rgba(124,58,237,0.1)] transition-all duration-300 border border-light-800 group-hover:border-primary-200/50;
 
     .badge-text {
-      @apply text-sm font-semibold capitalize;
+      @apply text-xs font-bold uppercase tracking-wider;
     }
   }
 }
 
 @utility dark-gradient {
-  @apply bg-gradient-to-b from-[#1A1C20] to-[#08090D];
+  @apply bg-gradient-to-b from-[#18181b] to-[#09090b]; /* Zinc 900 to Zinc 950 */
+}
+
+@utility obsidian-gradient {
+  @apply bg-gradient-to-br from-[#18181b] via-[#09090b] to-[#000000]; /* Zinc 900 -> 950 -> Black */
 }
 
 @utility border-gradient {
-  @apply bg-gradient-to-b from-[#4B4D4F] to-[#4B4D4F33];
+  @apply bg-gradient-to-b from-[#3f3f46] to-[#18181b]; /* Zinc 700 to Zinc 900 */
 }
 
 @utility pattern {
@@ -307,11 +311,11 @@
 }
 
 @utility blue-gradient-dark {
-  @apply bg-gradient-to-b from-[#171532] to-[#08090D];
+  @apply bg-gradient-to-br from-[#2e1065] to-[#020617]; /* Violet 950 to Slate 950 */
 }
 
 @utility blue-gradient {
-  @apply bg-gradient-to-l from-[#FFFFFF] to-[#CAC5FE];
+  @apply bg-gradient-to-br from-[#a78bfa] to-[#7c3aed]; /* Violet 400 to Violet 600 */
 }
 
 @utility flex-center {
@@ -319,16 +323,18 @@
 }
 
 @utility animate-fadeIn {
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(5px);
+    transform: translateY(10px);
+    filter: blur(4px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
 }
